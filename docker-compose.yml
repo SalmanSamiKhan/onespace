@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres
+    volumes:
+      - ./db/db:/var/lib/postgresql/data/
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - 'POSTGRES_HOST_AUTH_METHOD=trust'
+      - 'PGDATA=/var/lib/postgresql/data/'
+    networks:
+      - onespace_network
+    restart: always
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - '5050:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: onespace@onespace.com
+      PGADMIN_DEFAULT_PASSWORD: onespace
+    volumes:
+      - ./db/db:/var/lib/postgresql/data
+    links:
+      - db
+    networks:
+      - onespace_network
+
+  backend:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app/
+    ports:
+      - '8000:8000'
+    expose:
+      - 8000
+    depends_on:
+      - db
+      - pgadmin
+      # - frontend_prod
+    restart: always
+    networks:
+      - onespace_network
+
+  # frontend_prod:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile.prod
+  #   command: node server.js
+  #   ports:
+  #     - '3033:3033'
+  #   depends_on:
+  #     - db
+  #     - pgadmin
+  #   restart: always
+  #   networks:
+  #     - altersense_rpa_network
+
+networks:
+  onespace_network:
+    external: true
