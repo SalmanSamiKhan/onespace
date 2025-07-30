@@ -157,8 +157,19 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '3/hour',
+        'anon_register': '3/hour',
+        'anon_login': '5/min',
+        'user_resend_verification': '2/hour',
+        'user_change_password': '3/hour',
+        'anon_send_reset_password': '3/hour',
+        'user_reset_password': '2/hour',
+        'user_email_verification': '5/hour',
+        'anon_email_verification': '3/hour',
     },
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }

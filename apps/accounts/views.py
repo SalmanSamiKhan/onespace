@@ -19,7 +19,16 @@ from apps.accounts.serializers import (
     UserSendResetPasswordEmailSerializer,
     UserResetPasswordSerializer,
 )
-
+from apps.accounts.throttles import (
+    RegisterRateThrottle,
+    LoginRateThrottle,
+    ResendVerificationRateThrottle,
+    ChangePasswordRateThrottle,
+    SendResetPasswordEmailThrottle,
+    ResetPasswordRateThrottle,
+    EmailVerificationRateThrottle,
+    EmailVerificationAnonRateThrottle,
+)
 
 def get_tokens_for_user(user):
     """Returns refresh and access tokens for a user."""
@@ -46,6 +55,8 @@ def get_tokens_for_user(user):
 
 
 class UserRegisterView(APIView):
+    throttle_classes = [RegisterRateThrottle]
+
     @extend_schema(
         request=UserRegisterSerializer,
         responses=UserRegisterSerializer,
@@ -64,7 +75,7 @@ class UserRegisterView(APIView):
 
 
 class UserResendVerificationEmailView(APIView):
-    throttle_classes = [AnonRateThrottle]
+    throttle_classes = [ResendVerificationRateThrottle]
 
     @extend_schema(
         request=UserResendVerificationEmailSerializer,
@@ -81,6 +92,11 @@ class UserResendVerificationEmailView(APIView):
 
 
 class UserEmailVerificationView(APIView):
+    throttle_classes = [
+        EmailVerificationRateThrottle,
+        EmailVerificationAnonRateThrottle
+    ]
+
     @extend_schema(
         request=UserEmailVerificationSerializer,
         responses=UserEmailVerificationSerializer,
@@ -103,6 +119,8 @@ class UserEmailVerificationView(APIView):
 
 
 class UserLoginView(APIView):
+    throttle_classes = [LoginRateThrottle]
+
     @extend_schema(
         request=UserLoginSerializer,
         responses=UserLoginSerializer,
@@ -132,6 +150,7 @@ class UserProfileView(APIView):
 
 
 class UserChangePasswordView(APIView):
+    throttle_classes = [ChangePasswordRateThrottle]
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -160,7 +179,7 @@ class UserLogoutView(APIView):
 
 
 class UserSendResetPasswordEmailView(APIView):
-    throttle_classes = [AnonRateThrottle]
+    throttle_classes = [SendResetPasswordEmailThrottle]
 
     @extend_schema(request=UserSendResetPasswordEmailSerializer)
     def post(self, request):
@@ -173,6 +192,8 @@ class UserSendResetPasswordEmailView(APIView):
 
 
 class UserResetPasswordView(APIView):
+    throttle_classes = [ResetPasswordRateThrottle]
+
     @extend_schema(request=UserResetPasswordSerializer)
     def post(self, request, uid, token):
         serializer = UserResetPasswordSerializer(
