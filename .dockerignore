@@ -1,0 +1,88 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# C extensions
+*.so
+
+# Virtual environments
+env/
+venv/
+ENV/
+.venv/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+
+# Unit test / coverage reports
+.coverage
+.tox/
+.nox/
+.pytest_cache/
+htmlcov/
+junit.xml
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Python distribution
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Docker
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+
+# Git
+.git/
+.gitignore
+
+# Node/npm
+node_modules/
+*.tsbuildinfo
+*.log
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Static / build
+static/
+staticfiles/
+*.sass-cache
+
+# System
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Pipenv
+Pipfile.lock
+
+# Coverage
+coverage.xml
+.cache/
