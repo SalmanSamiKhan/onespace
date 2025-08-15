@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.accounts.views import (
+from apps.accounts.views.views import (
     UserRegisterView,
     UserEmailVerificationView,
     UserResendVerificationEmailView,
@@ -9,6 +9,11 @@ from apps.accounts.views import (
     UserChangePasswordView,
     UserSendResetPasswordEmailView,
     UserResetPasswordView,
+)
+from apps.accounts.views.google_auth_views import (
+    google_signin,
+    google_signout,
+    google_callback,
 )
 
 urlpatterns = [
@@ -38,4 +43,7 @@ urlpatterns = [
         UserResendVerificationEmailView.as_view(),
         name="resend-verification-email",
     ),
+    path("google/signin/", google_signin, name="google-signin"),
+    path("google/signout/", google_signout, name="google-signout"),
+    path("google/callback/", google_callback, name="google-callback"),
 ]

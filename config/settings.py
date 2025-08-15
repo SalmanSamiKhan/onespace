@@ -184,3 +184,15 @@ SPECTACULAR_SETTINGS = {
 
 PASSWORD_RESET_TIMEOUT = 300
 EMAIL_VERIFICATION_TIMEOUT = 300
+
+# Google OAuth2 settings
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get('GOOGLE_OAUTH_CLIENT_ID')
+if not GOOGLE_OAUTH_CLIENT_ID:
+    raise ValueError(
+        'GOOGLE_OAUTH_CLIENT_ID is missing.'
+        'Have you put it in a file at core/.env ?'
+    )
+
+# Allow the Google sign in popup to work.
+SECURE_REFERRER_POLICY = 'no-referrer-when-downgrade'
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
